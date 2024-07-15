@@ -8,25 +8,13 @@ from menu import menu
 authorized_vehicles_df = pd.read_csv('datasets/authorized_vehicles.csv')
 vehicle_logs_df = pd.read_csv('datasets/indian_vehicle_parking_data.csv')
 
-def calculate_parking_time(row):
-    in_time = datetime.strptime(row['In Time'], '%Y-%m-%d %H:%M:%S')
-    out_time = datetime.strptime(row['Out Time'], '%Y-%m-%d %H:%M:%S')
-    total_parking_time = out_time - in_time
-    return total_parking_time
-
-def format_parking_time(delta):
-    days = delta.days
-    hours, remainder = divmod(delta.seconds, 3600)
-    minutes, _ = divmod(remainder, 60)
-    return f"{days} days {hours} hours {minutes} minutes"
-
 def main():
-    with open( "style.css" ) as css:
-        st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
+    with open("style.css") as css:
+        st.markdown(f'<style>{css.read()}</style>', unsafe_allow_html=True)
 
     menu()
     display_heading()
-    
+
     st.title("Parking Insights")
     st.markdown("This page provides insights into parking data.")
 
@@ -57,11 +45,11 @@ def main():
     # Date and time selection for parking slot occupancy
     st.header("Parking Slot Occupancy")
     occupancy_date = st.date_input("Select a date for occupancy", datetime.today(), key="occupancy_date")
-    occupancy_time = st.time_input("Select a time for occupancy", datetime.now().time(), key="occupancy_time")
+    occupancy_time = st.time_input("Select a time for occupancy", key="occupancy_time")
     occupancy_datetime = datetime.combine(occupancy_date, occupancy_time)
 
     # Button to trigger search
-    search_button = st.button("Search",key = "search_occupancy")
+    search_button = st.button("Search", key="search_occupancy")
 
     if search_button:
         # Assuming vehicle_logs_df is your DataFrame containing datetime strings
@@ -92,7 +80,7 @@ def main():
     vehicle_plate = st.text_input("Enter Vehicle Number Plate", key="vehicle_plate")
     search_date = st.date_input("Select a date for search", datetime.today(), key="search_date")
 
-    if st.button("Search", key = "search_number"):
+    if st.button("Search", key="search_number"):
         # Filter logs for the selected vehicle and date
         vehicle_logs_filtered = vehicle_logs_df[(vehicle_logs_df['Vehicle Number'] == vehicle_plate) &
                                                 (pd.to_datetime(vehicle_logs_df['In Time']).dt.date == search_date)]
@@ -110,7 +98,7 @@ def main():
 
     # GitHub link and contributors section
     st.markdown("<br><br>", unsafe_allow_html=True)
-        
+
     # GitHub link and icon using HTML and CSS for styling
     github_link = "https://github.com/roysammy123/Vehicle-Movement-Analysis-and-Insight-Generation-Intel-Unnati-Industrial-Program"
     github_icon = "https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/github.svg"
